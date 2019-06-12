@@ -17,9 +17,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static org.testng.Assert.assertEquals;
 
@@ -30,6 +28,7 @@ public class SoapTest {
     private final static Logger LOG = LoggerFactory.getLogger(SoapTest.class);
 
     private WsdlProject project;
+    private Map<String, String> suiteParams = new HashMap<>();
 
     @BeforeClass
     private void setUp() throws XmlException, IOException, SoapUIException {
@@ -49,14 +48,7 @@ public class SoapTest {
     @Test(dataProvider = "suiteProvider")
     public void testSoapSuite(TestSuite suite) {
         LOG.info("Suite name: {}", suite.getName());
-        assertEquals(1, 1);
-    }
-
-    private void whatQMQM() throws XmlException, IOException, SoapUIException {
-        WsdlProject project = new WsdlProject("");
-        WsdlTestSuite suite = project.getTestSuiteAt(0);
-        WsdlTestSuiteRunner runner = suite.run(new StringToObjectMap(suite.getProperties()), false);
-
-        AllureLifecycle lc = Allure.getLifecycle();
+        suiteParams.clear();
+        WsdlTestSuiteRunner suiteRunner = (WsdlTestSuiteRunner) suite.run(new StringToObjectMap(suite.getProperties()), false);
     }
 }
