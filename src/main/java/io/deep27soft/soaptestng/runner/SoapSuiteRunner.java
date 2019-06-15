@@ -34,7 +34,7 @@ public final class SoapSuiteRunner {
         SoapUI.setSoapUICore(new StandaloneSoapUICore(true));
         this.testSuite = testSuite;
 
-//        TestModelItemUtils.setProperties(testSuite, suiteParams);
+        TestModelItemUtils.setProperties(testSuite, suiteParams);
         TestModelItemUtils.logProperties(testSuite);
 
         allureSuiteListener = new AllureSoapSuiteListener();

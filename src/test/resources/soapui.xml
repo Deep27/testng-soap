@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Набор SOAP-UI">
-    <test name="SOAP-UI-тесты">
+<suite name="SoapUI Runner">
+    <test name="Лаунчер SoapUI тестов">
         <classes>
             <class name="io.deep27soft.soaptestng.SoapTest"/>
         </classes>

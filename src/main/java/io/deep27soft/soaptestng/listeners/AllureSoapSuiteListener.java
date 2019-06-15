@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
-public class AllureSoapSuiteListener extends AllureSoapListener implements TestSuiteRunListener {
+public final class AllureSoapSuiteListener extends AllureSoapListener implements TestSuiteRunListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(AllureSoapSuiteListener.class);
 

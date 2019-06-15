@@ -41,8 +41,8 @@ abstract class AllureSoapListener {
         return Stream.of(
                 new Label().withName(PARENT_SUITE_LABEL_NAME).withValue("SOAP-UI-Тесты"),
                 new Label().withName(SUITE_LABEL_NAME).withValue(testSuite.getName()),
-                new Label().withName("story").withValue("a story"),
-                new Label().withName("epic").withValue("an epic"),
+                new Label().withName("story").withValue(testSuite.getLabel()),
+                new Label().withName("epic").withValue("SOAP UI"),
                 new Label().withName("feature").withName("a feature"))
                 .collect(Collectors.toList());
     }

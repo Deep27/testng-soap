@@ -30,7 +30,9 @@ public final class TestModelItemUtils {
         }
         if (!testModelItem.getProperties().isEmpty()) {
             LOG.info("Properties of {} \"{}\"", of, testModelItem.getName());
-            testModelItem.getProperties().forEach((key, value) -> LOG.info("\t{}: {}", key, value.getValue()));
+            testModelItem.getProperties().forEach((key, value) -> LOG.info("\t\"{}\": \"{}\"", key, value.getValue()));
+        } else {
+            LOG.info("Properties for {} are absent!", of);
         }
     }
 

@@ -10,7 +10,8 @@
 
     <properties>
         <aspectj.version>1.8.0</aspectj.version>
-        <suite>soapui.xml</suite>
+        <soap.project.name>NO_NAME</soap.project.name>
+        <suite>soapui</suite>
     </properties>
 
     <dependencies>
@@ -53,9 +54,10 @@
                     </argLine>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                        <soap.project.path>src/main/resources/soap/${soap.project.name}.xml</soap.project.path>
                     </systemPropertyVariables>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/${suite}</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/${suite}.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
                 <dependencies>
