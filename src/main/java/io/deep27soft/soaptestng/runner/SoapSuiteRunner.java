@@ -34,13 +34,13 @@ public final class SoapSuiteRunner {
         SoapUI.setSoapUICore(new StandaloneSoapUICore(true));
         this.testSuite = testSuite;
 
-        TestModelItemUtils.setProperties(testSuite, suiteParams);
+//        TestModelItemUtils.setProperties(testSuite, suiteParams);
         TestModelItemUtils.logProperties(testSuite);
 
         allureSuiteListener = new AllureSoapSuiteListener();
+        removeSuiteRunListeners();
         testSuite.addTestSuiteRunListener(allureSuiteListener);
         allureTestListener = new AllureSoapTestListener();
-        testSuite.getTestCaseList().forEach(testCase ->  testCase.addTestRunListener(allureTestListener));
     }
 
     /**
@@ -48,10 +48,11 @@ public final class SoapSuiteRunner {
      * @return - есть хотя бы один упавший тест
      */
     public boolean run() {
-        removeSuiteRunListeners();
+        LOG.info("Preparing to run suite \"{}\"", testSuite.getName());
         testSuite.getTestCaseList().forEach(testCase -> {
             WsdlTestCase wsdlTestCase = testSuite.getTestCaseByName(testCase.getName());
             removeTestRunListeners(wsdlTestCase);
+            testCase.addTestRunListener(allureTestListener);
         });
         return runSuite();
     }
@@ -61,6 +62,7 @@ public final class SoapSuiteRunner {
      * @return - есть хотя бы один упавший тест
      */
     private boolean runSuite() {
+        LOG.info("Running suite \"{}\"", testSuite.getName());
         WsdlTestSuiteRunner suiteRunner = testSuite.run(new StringToObjectMap(testSuite.getProperties()), false);
         return suiteRunner.getResults().stream().anyMatch(result -> result.getStatus().equals(TestRunner.Status.FAILED));
     }
@@ -80,7 +82,7 @@ public final class SoapSuiteRunner {
     }
 
     /**
-     * удаляет все слушатели у сьюты
+     * удаляет все слушатели для сьюты
      */
     private void removeSuiteRunListeners() {
         for (TestSuiteRunListener suiteRunListener : testSuite.getTestSuiteRunListeners()) {
@@ -89,7 +91,7 @@ public final class SoapSuiteRunner {
     }
 
     /**
-     * удаляет все слушатели у теста
+     * удаляет все слушатели для теста
      */
     private void removeTestRunListeners(WsdlTestCase wsdlTestCase) {
         for (TestRunListener testRunListener : wsdlTestCase.getTestRunListeners()) {
