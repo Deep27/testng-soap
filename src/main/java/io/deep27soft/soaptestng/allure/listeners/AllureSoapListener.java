@@ -1,10 +1,9 @@
-package io.deep27soft.soaptestng.listeners;
+package io.deep27soft.soaptestng.allure.listeners;
 
 import com.eviware.soapui.model.TestModelItem;
 import com.eviware.soapui.model.testsuite.TestSuite;
 import io.qameta.allure.Allure;
 import io.qameta.allure.AllureLifecycle;
-import io.qameta.allure.ResultsUtils;
 import io.qameta.allure.model.Label;
 import io.qameta.allure.model.Parameter;
 

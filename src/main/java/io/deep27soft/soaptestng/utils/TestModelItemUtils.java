@@ -26,6 +26,7 @@ public final class TestModelItemUtils {
         } else if (testModelItem instanceof WsdlTestStep) {
             of = "step";
         } else {
+            LOG.error("Unknown TestModelItem implementation \"{}\"!", testModelItem.getClass());
             throw new IllegalStateException("Don't know properties of what I'm trying to log.");
         }
         if (!testModelItem.getProperties().isEmpty()) {

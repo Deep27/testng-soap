@@ -1,4 +1,4 @@
-package io.deep27soft.soaptestng.listeners;
+package io.deep27soft.soaptestng.allure.listeners;
 
 import com.eviware.soapui.model.testsuite.*;
 import io.qameta.allure.model.Status;

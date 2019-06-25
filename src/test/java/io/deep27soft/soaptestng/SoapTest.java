@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
 
-//https://api.nasa.gov/planetary/apod?api_key=weYDCDbTAZcpeGhjaQco7Js37PAVcdAAqW0EediQ
 
 public class SoapTest {
 
@@ -34,6 +33,7 @@ public class SoapTest {
         System.setProperty("soapui.log4j.config",
                 Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "soap-log4j.xml").toString());
         String projectPath = Paths.get(System.getProperty("user.dir"), System.getProperty("soap.project.path")).toString();
+        LOG.info("Loading SoapUI project: \"{}\"", projectPath);
         project = new WsdlProject(projectPath);
         LOG.info("Loaded SoapUI project: \"{}\"", project.getName());
     }
