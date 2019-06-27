@@ -15,12 +15,6 @@ import java.util.*;
 import static io.deep27soft.soaptestng.allure.attachment.SoapAllureAttachment.attachRequest;
 import static io.deep27soft.soaptestng.allure.attachment.SoapAllureAttachment.attachResponse;
 
-// @TODO property transfer from test case to test step
-// @TODO set properties of soap xml in java project
-// @TODO add failed test
-// @TODO something else for more extended example
-// @TODO drink less beer next time
-
 public final class AllureSoapTestListener extends AllureSoapListener implements TestRunListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(AllureSoapSuiteListener.class);
@@ -131,7 +125,8 @@ public final class AllureSoapTestListener extends AllureSoapListener implements 
 //            request = ((JdbcTestStepResult) testStepResult).getRequestContent();
 //            response = ((JdbcTestStepResult) testStepResult).getResponseContentAsXml();
         } else {
-            lifecycle.updateStep(stepId, step -> step.withParameters(getParameters(stepResult.getTestStep())));
+            lifecycle.updateStep(stepId, step -> step
+                    .withParameters(getParameters(stepResult.getTestStep())));
         }
         message.append(String.format("\n\tEndpoint: %s\n\tRequest:\n\t\t%s\n\tResponse:\n\t\t%s", endpoint, request, response));
         if (mapStepToAllureStepStatus(stepResult.getStatus()).equals(Status.FAILED)) {
