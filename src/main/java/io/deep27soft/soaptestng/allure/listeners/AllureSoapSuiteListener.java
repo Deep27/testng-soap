@@ -12,6 +12,11 @@ public final class AllureSoapSuiteListener extends AllureSoapListener implements
 
     private static final Logger LOG = LoggerFactory.getLogger(AllureSoapSuiteListener.class);
 
+    /**
+     *  метод вызывается автоматически перед запуском сьюты
+     *  он ищет все тесты, у которых установлен флаг disabled
+     *  и сразу добавляет их в отчет как пропущенные
+     */
     @Override
     public void beforeRun(TestSuiteRunner testSuiteRunner, TestSuiteRunContext testSuiteRunContext) {
         TestSuite testSuite = testSuiteRunContext.getTestSuite();
@@ -37,16 +42,16 @@ public final class AllureSoapSuiteListener extends AllureSoapListener implements
 
     @Override
     public void afterRun(TestSuiteRunner testSuiteRunner, TestSuiteRunContext testSuiteRunContext) {
-
+        // not used
     }
 
     @Override
     public void beforeTestCase(TestSuiteRunner testSuiteRunner, TestSuiteRunContext testSuiteRunContext, TestCase testCase) {
-
+        // not used
     }
 
     @Override
     public void afterTestCase(TestSuiteRunner testSuiteRunner, TestSuiteRunContext testSuiteRunContext, TestCaseRunner testCaseRunner) {
-
+        // not used
     }
 }

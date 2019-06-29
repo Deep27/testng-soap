@@ -27,6 +27,10 @@ public final class AllureSoapTestListener extends AllureSoapListener implements 
     private List<String> failMessages;
     private List<String> failTraces;
 
+    /**
+     *  метод вызывается перед запуском теста
+     *  подготавливает тест и стартует его, используя allureLifecycle
+     */
     @Override
     public void beforeRun(TestCaseRunner testCaseRunner, TestCaseRunContext testCaseRunContext) {
         TestCase testCase = testCaseRunContext.getTestCase();
@@ -49,6 +53,11 @@ public final class AllureSoapTestListener extends AllureSoapListener implements 
         lifecycle.startTestCase(testCaseId);
     }
 
+    /**
+     *  метод вызывается после запуска теста
+     *  обрабатываются результаты теста (сообщения об ошибках, если он упал), обновляется статус
+     *  и allureLifecycle его завершает (тест добавлится в отчет)
+     */
     @Override
     public void afterRun(TestCaseRunner testCaseRunner, TestCaseRunContext testCaseRunContext) {
         if(!failMessages.isEmpty()) {
@@ -71,6 +80,10 @@ public final class AllureSoapTestListener extends AllureSoapListener implements 
         // not used
     }
 
+    /**
+     *  метод срабатывает перед запуском каждого тестового шага
+     *  allureLifecycle подготавливает тестовый шаг для добавления его в отчет
+     */
     @Override
     public void beforeStep(TestCaseRunner testCaseRunner, TestCaseRunContext testCaseRunContext, TestStep testStep) {
         stepId = UUID.randomUUID().toString();
@@ -78,6 +91,11 @@ public final class AllureSoapTestListener extends AllureSoapListener implements 
                 new StepResult().withName(testStep.getName()).withStatus(Status.PASSED));
     }
 
+    /**
+     * метод срабатывает после завершения каждого тестового шага
+     * обрабатываются результаты тестового шага и тест завершается allureLifecycle'ом
+     * (готов быть добавленным в отчет)
+     */
     @Override
     public void afterStep(TestCaseRunner testCaseRunner, TestCaseRunContext testCaseRunContext, TestStepResult testStepResult) {
         Status status = mapStepToAllureStepStatus(testStepResult.getStatus());

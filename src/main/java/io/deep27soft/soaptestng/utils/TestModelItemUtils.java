@@ -17,6 +17,10 @@ public final class TestModelItemUtils {
         throw new IllegalStateException(String.format("Don't try to instantiate util class %s!", TestModelItemUtils.class.getName()));
     }
 
+    /**
+     * вывести в логах свойства объекта soap-проекта
+     * @param testModelItem - сьюта, тест или шаг
+     */
     public static void logProperties(TestModelItem testModelItem) {
         String of;
         if (testModelItem instanceof WsdlTestSuite) {
@@ -37,6 +41,11 @@ public final class TestModelItemUtils {
         }
     }
 
+    /**
+     * установить свойства для объекта соап-проекта
+     * @param testModelItem - сьюта, тест или шаг
+     * @param properties - свойства
+     */
     public static void setProperties(TestModelItem testModelItem, Map<String, String> properties) {
         properties.forEach(testModelItem::setPropertyValue);
     }

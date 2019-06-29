@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * родительский класс для слушателей soap-тестов
+ */
 abstract class AllureSoapListener {
 
-    private static final String SUITE_LABEL_NAME = "suite";
-    private static final String PARENT_SUITE_LABEL_NAME = "parentSuite";
-
+    // AllureLIfecycle содержит в себе Allure-контекст и методы для работы с ним
+    // Позволяет работать со сьютами, тестами и шагами, для добавления их в отчет и модификации
     final AllureLifecycle lifecycle = Allure.getLifecycle();
 
     /**
@@ -38,8 +40,8 @@ abstract class AllureSoapListener {
      */
     List<Label> getLabels(TestSuite testSuite) {
         return Stream.of(
-                new Label().withName(PARENT_SUITE_LABEL_NAME).withValue("SOAP-UI-Тесты"),
-                new Label().withName(SUITE_LABEL_NAME).withValue(testSuite.getName()),
+                new Label().withName("parentSuite").withValue("SOAP-UI-Тесты"),
+                new Label().withName("suite").withValue(testSuite.getName()),
                 new Label().withName("story").withValue(testSuite.getLabel()),
                 new Label().withName("epic").withValue("SOAP UI"),
                 new Label().withName("feature").withName("a feature"))

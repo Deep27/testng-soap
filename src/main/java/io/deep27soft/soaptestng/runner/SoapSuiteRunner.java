@@ -19,7 +19,6 @@ import java.util.Map;
 
 /**
  * Класс для работы с SOAP-сьютой
- * Created by sotnichenko-r on 21.02.2019.
  */
 public final class SoapSuiteRunner {
 
@@ -30,12 +29,21 @@ public final class SoapSuiteRunner {
     private final AllureSoapSuiteListener allureSuiteListener;
     private final AllureSoapTestListener allureTestListener;
 
+    /**
+     * в конструкторе soap-сьюта подготавливается к запуску:
+     * удаляются все ненужные слушатели, добавляются свои из пакета allure.listeners,
+     * устанавливаются параметры, если необходимо
+     * @param testSuite - soap-сьюта
+     * @param suiteParams - параметры, которые нужно добавить в сьюту перед запуском
+     */
     public SoapSuiteRunner(WsdlTestSuite testSuite, Map<String, String> suiteParams) {
         SoapUI.setSoapUICore(new StandaloneSoapUICore(true));
         this.testSuite = testSuite;
 
-        TestModelItemUtils.setProperties(testSuite, suiteParams);
-        TestModelItemUtils.logProperties(testSuite);
+        if (!suiteParams.isEmpty()) {
+            TestModelItemUtils.setProperties(testSuite, suiteParams);
+            TestModelItemUtils.logProperties(testSuite);
+        }
 
         allureSuiteListener = new AllureSoapSuiteListener();
         removeSuiteRunListeners();
@@ -65,20 +73,6 @@ public final class SoapSuiteRunner {
         LOG.info("Running suite \"{}\"", testSuite.getName());
         WsdlTestSuiteRunner suiteRunner = testSuite.run(new StringToObjectMap(testSuite.getProperties()), false);
         return suiteRunner.getResults().stream().anyMatch(result -> result.getStatus().equals(TestRunner.Status.FAILED));
-    }
-
-    /**
-     *  метод устанавливает флаг disabled для всех тестов в сьюте
-     *  и запускает runner, для того, чтобы AllureLifecycle смог
-     *  добавить пропущенные тесты в отчет
-     */
-    public void ignore() {
-        removeSuiteRunListeners();
-        testSuite.getTestCaseList().forEach(testCase -> {
-            WsdlTestCase wsdlTestCase = testSuite.getTestCaseByName(testCase.getName());
-            removeTestRunListeners(wsdlTestCase);
-            wsdlTestCase.setDisabled(true);
-        });
     }
 
     /**

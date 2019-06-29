@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public abstract class SoapAllureAttachment {
 
+    // рендереры для корректного отображения вложений в allure-отчете
     private static FreemarkerAttachmentRenderer REQUEST_RENDERER = new FreemarkerAttachmentRenderer("http-request.ftl");
     private static FreemarkerAttachmentRenderer RESPONSE_RENDERER = new FreemarkerAttachmentRenderer("http-response.ftl");
 
