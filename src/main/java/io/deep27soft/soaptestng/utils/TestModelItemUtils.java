@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.function.Predicate;
 
 public final class TestModelItemUtils {
 
@@ -22,17 +23,7 @@ public final class TestModelItemUtils {
      * @param testModelItem - сьюта, тест или шаг
      */
     public static void logProperties(TestModelItem testModelItem) {
-        String of;
-        if (testModelItem instanceof WsdlTestSuite) {
-            of = "suite";
-        } else if (testModelItem instanceof WsdlTestCase) {
-            of = "test case";
-        } else if (testModelItem instanceof WsdlTestStep) {
-            of = "step";
-        } else {
-            LOG.error("Unknown TestModelItem implementation \"{}\"!", testModelItem.getClass());
-            throw new IllegalStateException("Don't know properties of what I'm trying to log.");
-        }
+        String of = testModelItem.getClass().getSimpleName();
         if (!testModelItem.getProperties().isEmpty()) {
             LOG.info("Properties of {} \"{}\"", of, testModelItem.getName());
             testModelItem.getProperties().forEach((key, value) -> LOG.info("\t\"{}\": \"{}\"", key, value.getValue()));
