@@ -36,14 +36,21 @@ public final class AllureSoapTestListener extends AllureSoapListener implements 
         TestCase testCase = testCaseRunContext.getTestCase();
         TestSuite testSuite = testCase.getTestSuite();
         prepareTestCase();
+
+        // тело теста
         testResult = testResult.withName(testCase.getName())
                 .withFullName(testSuite.getName() + ":" + testCase.getName())
                 .withParameters(getParameters(testCase))
                 .withLabels(getLabels(testSuite));
         lifecycle.scheduleTestCase(testResult);
 
+        // фикстура @AfterTest (здесь пустая)
+        // так же можно добавить фикстуру @BeforeTest
+        // в testResultContainer используя метод .withBefores(...) TestResultContainer'а
         FixtureResult afterResult = new FixtureResult()
                 .withStatus(Status.PASSED);
+
+        // контейнер, содержащий тело теста и фикстуры
         TestResultContainer testResultContainer = new TestResultContainer()
                 .withUuid(testContainerId)
                 .withAfters(afterResult)
@@ -117,6 +124,8 @@ public final class AllureSoapTestListener extends AllureSoapListener implements 
      */
     private void processStepResults(TestStepResult stepResult, TestCaseRunner testCaseRunner) {
         Status stepStatus = mapStepToAllureStepStatus(stepResult.getStatus());
+
+        // подготавливаем сообщение для логирования
         StringBuilder message = new StringBuilder(String.format(
                 "Step \"%s\" has finished with status: %s", stepResult.getTestStep().getName(), stepStatus.toString()));
         message.append(String.format("\n\tMessages:\n\t\t%s",
@@ -124,29 +133,35 @@ public final class AllureSoapTestListener extends AllureSoapListener implements 
         String endpoint = "-";
         String request = "-";
         String response = "-";
+
+        // пример получения некоторых данных результата шага
+        // сохраняются в строку для вывода логов в консоль или файл
+        // (к Allure-отчету не относится)
         if (stepResult instanceof WsdlTestRequestStepResult) {
+            // следующие два метода создают вложения к шагам в Allure
             attachRequest(lifecycle, (WsdlTestRequestStepResult) stepResult);
             attachResponse(lifecycle, (WsdlTestRequestStepResult) stepResult);
             endpoint = ((WsdlTestRequestStepResult) stepResult).getProperties().get("URL");
             request = ((WsdlTestRequestStepResult) stepResult).getRequestContentAsXml();
             response = ((WsdlTestRequestStepResult) stepResult).getResponseContentAsXml();
-        } else if (stepResult instanceof RestRequestStepResult) {
+        } else if (stepResult instanceof RestRequestStepResult) { // следующие условия не выполняются
+            // это примеры того как можно обработать другие виды запросов в шагах
             // если в шаге вместо SOAP был REST-запрос
-//            RequestResponseAttachment attachments = new RequestResponseAttachment((RestRequestStepResult) testStepResult);
-//            attachments.attachRequest(lifecycle);
-//            attachments.attachResponse(lifecycle);
-//            endpoint = ((RestRequestStepResult) testStepResult).getProperties().get("URL");
-//            request = ((RestRequestStepResult) testStepResult).getRequestContent();
-//            response = ((RestRequestStepResult) testStepResult).getResponseContent();
+            endpoint = ((RestRequestStepResult) stepResult).getProperties().get("URL");
+            request = ((RestRequestStepResult) stepResult).getRequestContent();
+            response = ((RestRequestStepResult) stepResult).getResponseContent();
         } else if (stepResult instanceof JdbcTestStepResult) {
             // если был запрос в бд
-//            request = ((JdbcTestStepResult) testStepResult).getRequestContent();
-//            response = ((JdbcTestStepResult) testStepResult).getResponseContentAsXml();
+            request = ((JdbcTestStepResult) stepResult).getRequestContent();
+            response = ((JdbcTestStepResult) stepResult).getResponseContentAsXml();
         } else {
             lifecycle.updateStep(stepId, step -> step
                     .withParameters(getParameters(stepResult.getTestStep())));
         }
         message.append(String.format("\n\tEndpoint: %s\n\tRequest:\n\t\t%s\n\tResponse:\n\t\t%s", endpoint, request, response));
+
+        // если тестовый шаг упал, добавляем в failMessages и failTraces тексты с ошибками,
+        // которые в методе afterRun(...) будет добавлен в Allure-отчет
         if (mapStepToAllureStepStatus(stepResult.getStatus()).equals(Status.FAILED)) {
             String[] messages = stepResult.getMessages();
             String testStepName = "\"" + stepResult.getTestStep().getName() + "\" -> ";

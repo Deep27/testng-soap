@@ -7,6 +7,7 @@ import io.deep27soft.soaptestng.runner.SoapSuiteRunner;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.apache.xmlbeans.XmlException;
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
@@ -81,6 +82,7 @@ public class SoapTest {
         // так как testng об ошибке не сообщит
         if (hasFailedTests) {
             LOG.error("You have failed SoapUI-tests!");
+            Assert.fail("You have failed SoapUI-tests!");
         }
     }
 

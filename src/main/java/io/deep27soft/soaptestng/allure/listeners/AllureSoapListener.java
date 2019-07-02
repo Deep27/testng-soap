@@ -21,7 +21,7 @@ abstract class AllureSoapListener {
     final AllureLifecycle lifecycle = Allure.getLifecycle();
 
     /**
-     * метод для получения параметров из тестовой модели (сьюты, теста или шага)
+     * метод для получения параметров из тестовой TestRunListenerмодели (сьюты, теста или шага)
      * @param testModelItem - TestSuite, TestCase или TestStep
      * @return - карта параметров
      */
@@ -36,7 +36,7 @@ abstract class AllureSoapListener {
      * для того чтобы тесты группировались в Allure-отчете
      *
      * @param testSuite - soapui-сьюта
-     * @return - список лейблов
+     * @return - список лейбловTestRunListener
      */
     List<Label> getLabels(TestSuite testSuite) {
         return Stream.of(
